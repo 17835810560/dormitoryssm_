@@ -14,5 +14,6 @@ public class TestGit {
         System.out.println("push");
           System.out.println("pull test");
           System.out.println("git mayun");
+                 System.out.println("github update");
     }
 }
