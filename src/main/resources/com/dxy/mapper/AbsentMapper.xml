@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dxy.mapper.AbsentMapper">
+
+    <insert id="insert">
+        insert into absent (id, building_id, dormitory_id, student_id, dormitory_admin_id, create_date, reason)
+        values (null, #{buildingId}, #{dormitoryId}, #{studentId}, #{dormitoryAdminId}, #{createDate}, #{reason})
+    </insert>
+    <select id="list" resultType="com.dxy.entity.Absent">
+        select a.id,
+               b.name  buildingName,
+               d.name  dormitoryName,
+               s.name  studentName,
+               a.reason,
+               da.name dormitoryAdminName,
+               a.create_date
+        from absent a
+                 left join building b on a.building_id = b.id
+                 left join dormitory d on a.dormitory_id = d.id
+                 left join student s on a.student_id = s.id
+                 left join dormitory_admin da on a.dormitory_admin_id = da.id
+    </select>
+    <select id="searchByBuildingName" resultType="com.dxy.entity.Absent">
+        select a.id,
+               b.name  buildingName,
+               d.name  dormitoryName,
+               s.name  studentName,
+               a.reason,
+               da.name dormitoryAdminName,
+               a.create_date
+        from absent a
+                 left join building b on a.building_id = b.id
+                 left join dormitory d on a.dormitory_id = d.id
+                 left join student s on a.student_id = s.id
+                 left join dormitory_admin da on a.dormitory_admin_id = da.id
+        where b.name like concat('%', #{buildingName}, '%')
+    </select>
+    <select id="searchByDormitoryName" resultType="com.dxy.entity.Absent">
+        select a.id,
+               b.name  buildingName,
+               d.name  dormitoryName,
+               s.name  studentName,
+               a.reason,
+               da.name dormitoryAdminName,
+               a.create_date
+        from absent a
+                 left join building b on a.building_id = b.id
+                 left join dormitory d on a.dormitory_id = d.id
+                 left join student s on a.student_id = s.id
+                 left join dormitory_admin da on a.dormitory_admin_id = da.id
+        where d.name like concat('%', #{dormitoryName}, '%')
+    </select>
+</mapper>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dxy.mapper.BuildingMapper">
+
+
+    <select id="list" resultType="building">
+        select b.id, b.name, b.introduction, b.admin_id, d.name adminName
+        from building b
+                 left join dormitory_admin d on b.admin_id = d.id
+    </select>
+
+    <select id="findByName" resultType="building">
+        select b.id, b.name, b.introduction, b.admin_id, d.name adminName
+        from building b
+                 left join dormitory_admin d on b.admin_id = d.id
+        where b.name like concat('%', #{name}, '%')
+    </select>
+
+    <select id="findByIntroduction" resultType="building">
+        select b.id, b.name, b.introduction, b.admin_id, d.name adminName
+        from building b
+                 left join dormitory_admin d on b.admin_id = d.id
+        where b.introduction like concat('%', #{introduction}, '%')
+    </select>
+
+    <insert id="insert">
+        insert into building (id, name, introduction, admin_id)
+        values (null, #{name}, #{introduction}, #{adminId})
+    </insert>
+
+    <update id="update">
+        update building
+        set name=#{name},
+            introduction=#{introduction},
+            admin_id=#{adminId}
+        where id = #{id}
+    </update>
+
+    <delete id="delete">
+        delete
+        from building
+        where id = #{id}
+    </delete>
+
+    <select id="searchDormitoryAdminIdByBuildingId" resultType="java.lang.Integer">
+        select admin_id from building where id=#{buildingId}
+    </select>
+
+</mapper>

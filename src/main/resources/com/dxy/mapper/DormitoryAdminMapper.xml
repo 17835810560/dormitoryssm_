@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dxy.mapper.DormitoryAdminMapper">
+
+    <!--    DormitoryAdmin findByUsername(String username);-->
+    <select id="findByUsername" resultType="dormitoryAdmin">
+        select *
+        from dormitory_admin
+        where username = #{username}
+    </select>
+    <!--       DormitoryAdmin list();-->
+    <select id="list" resultType="dormitoryAdmin">
+        select *
+        from dormitory_admin;
+    </select>
+    <!--     List<DormitoryAdmin> searchByUsername(String value);-->
+    <select id="searchByUsername" resultType="dormitoryAdmin">
+        select *
+        from dormitory_admin
+        where username like concat('%', #{value}, '%')
+    </select>
+
+    <!--    List<DormitoryAdmin> searchByName(String value);-->
+    <select id="searchByName" resultType="dormitoryAdmin">
+        select *
+        from dormitory_admin
+        where name like concat('%', #{value}, '%')
+    </select>
+
+
+    <!--        List<DormitoryAdmin> searchByTelephone(String value);-->
+    <select id="searchByTelephone" resultType="dormitoryAdmin">
+        select *
+        from dormitory_admin
+        where telephone like concat('%', #{value}, '%')
+    </select>
+
+    <insert id="save" parameterType="dormitoryAdmin">
+        insert into dormitory_admin
+        values (null, #{username}, #{password}, #{name}, #{gender}, #{telephone})
+    </insert>
+
+    <delete id="deleteById">
+        delete
+        from dormitory_admin
+        where id = #{id}
+    </delete>
+
+    <update id="update" parameterType="dormitoryAdmin">
+        update dormitory_admin
+        <set>
+
+            <if test="username!=null and username!=''">
+                username=#{username},
+            </if>
+
+            <if test="password!=null and password!=''">
+                password=#{password},
+            </if>
+
+            <if test="name!=null and name!=''">
+                name=#{name},
+            </if>
+
+            <if test="gender!=null and gender!=''">
+                gender=#{gender},
+            </if>
+
+            <if test="telephone!=null and telephone!=''">
+                telephone=#{telephone}
+            </if>
+
+        </set>
+        where id=#{id};
+    </update>
+
+
+
+</mapper>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dxy.mapper.DormitoryMapper">
+
+
+    <select id="availableDormitory" resultType="dormitory">
+        select *
+        from dormitory
+        where available > 0
+    </select>
+    <update id="subAvailable">
+        update dormitory
+        set available=available - 1
+        where id = #{dormitoryId}
+    </update>
+    <update id="addAvailable">
+        update dormitory
+        set available=available + 1
+        where id = #{OldDormitoryId}
+    </update>
+
+    <select id="findByBuildingId" resultType="java.lang.Integer">
+        select id
+        from dormitory
+        where building_id = #{buildingId}
+    </select>
+
+    <delete id="delete">
+        delete
+        from dormitory
+        where id = #{dormitoryId}
+    </delete>
+
+    <select id="list" resultType="com.dxy.entity.Dormitory">
+        select d.id, b.name buildingName, d.name, d.type, d.available, d.telephone
+        from dormitory d
+                 left join building b on d.building_id = b.id
+    </select>
+    <select id="searchByName" resultType="com.dxy.entity.Dormitory">
+        select d.id, b.name buildingName, d.name, d.type, d.available, d.telephone
+        from dormitory d
+                 left join building b on d.building_id = b.id
+        where d.name like concat('%', #{name}, '%')
+    </select>
+
+    <select id="searchByTelephone" resultType="com.dxy.entity.Dormitory">
+        select d.id, b.name buildingName, d.name, d.type, d.available, d.telephone
+        from dormitory d
+                 left join building b on d.building_id = b.id
+        where d.telephone like concat('%', #{telephone}, '%')
+    </select>
+
+    <insert id="insert">
+        insert into dormitory (id, building_id, name, type, available, telephone)
+        VALUES (null, #{buildingId}, #{name}, #{type}, #{available}, #{telephone})
+    </insert>
+
+    <update id="update">
+        update dormitory
+        set name=#{name},
+            telephone=#{telephone}
+        where id = #{id}
+    </update>
+    <select id="searchByBuildingId" resultType="com.dxy.entity.Dormitory">
+        select *
+        from dormitory
+        where building_id = #{buildingId}
+    </select>
+
+
+</mapper>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dxy.mapper.StudentMapper">
+
+    <select id="list" resultType="student">
+        select s.id,
+               s.dormitory_id dormitoryId,
+               d.name         dormitoryName,
+               s.number,
+               s.name,
+               s.gender,
+               s.state,
+               s.create_date
+        from student s
+                 left join dormitory d on s.dormitory_id = d.id
+    </select>
+    <select id="searchByNumber" resultType="student">
+        select s.id, d.name dormitoryName, s.number, s.name, s.gender, s.state, s.create_date
+        from student s
+                 left join dormitory d on s.dormitory_id = d.id
+        where s.number like concat('%', #{number}, '%')
+    </select>
+    <select id="searchByName" resultType="student">
+        select s.id, d.name dormitoryName, s.number, s.name, s.gender, s.state, s.create_date
+        from student s
+                 left join dormitory d on s.dormitory_id = d.id
+        where s.name like concat('%', #{name}, '%')
+    </select>
+    <insert id="insert" parameterType="student">
+        insert into student (id, number, name, gender, dormitory_id, state, create_date)
+        values (null, #{number}, #{name}, #{gender}, #{dormitoryId}, #{state}, #{createDate})
+    </insert>
+
+    <update id="update" parameterType="student">
+        update student
+        set dormitory_id=#{dormitoryId},
+            number=#{number},
+            name=#{name},
+            gender=#{gender}
+        where id = #{id}
+    </update>
+
+    <delete id="delete">
+        delete
+        from student
+        where id = #{id}
+    </delete>
+
+    <select id="findByDormitoryId" resultType="java.lang.Integer">
+        select id
+        from student
+        where dormitory_id = #{dormitoryId}
+    </select>
+
+    <update id="updateStudentDormitoryId">
+        update student
+        set dormitory_id=#{dormitoryId}
+        where id = #{studentId}
+    </update>
+
+    <select id="moveoutList" resultType="student">
+        select s.id,d.name dormitoryName,s.number,s.name,s.gender,s.state,s.dormitory_id dormitoryId
+        from student s
+                 left join dormitory d on s.dormitory_id = d.id
+        where state = '入住'
+    </select>
+    <select id="moveoutSearchByNumber" resultType="com.dxy.entity.Student">
+        select s.id,d.name dormitoryName,s.number,s.name,s.gender,s.state,s.dormitory_id dormitoryId
+        from student s
+                 left join dormitory d on s.dormitory_id = d.id
+        where state = '入住' and s.number like concat('%',#{number},'%')
+    </select>
+    <select id="moveoutSearchByName" resultType="com.dxy.entity.Student">
+        select s.id,d.name dormitoryName,s.number,s.name,s.gender,s.state,s.dormitory_id dormitoryId
+        from student s
+                 left join dormitory d on s.dormitory_id = d.id
+        where state = '入住' and s.name like concat('%',#{name},'%')
+    </select>
+
+    <update id="updateStateByStudentId">
+        update student set state='迁出' where id=#{studentId}
+    </update>
+
+    <select id="searchByDormitoryId" resultType="com.dxy.entity.Student">
+        select * from student where dormitory_id=#{dormitoryId}
+    </select>
+
+
+
+</mapper>
